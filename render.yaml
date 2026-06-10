@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: spy-dashboard
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: python server.py
+    envVars:
+      - key: DASHBOARD_HOST
+        value: 0.0.0.0
+      - key: DASHBOARD_DEFAULT_SYMBOL
+        value: SPY
+      - key: DASHBOARD_OPTION_BUDGET
+        value: "60"
+      - key: DASHBOARD_OPTION_TARGET_PREMIUM
+        value: "0.75"
+

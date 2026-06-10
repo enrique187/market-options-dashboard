@@ -1,0 +1,4 @@
+# The dashboard's own code uses only the Python standard library.
+# tzdata ships the IANA time zone database so zoneinfo can resolve
+# "America/New_York" on platforms (notably Windows) that don't bundle it.
+tzdata

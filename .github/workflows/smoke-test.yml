@@ -1,0 +1,23 @@
+name: Smoke test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check Python syntax
+        run: python -m py_compile server.py
+      - name: Start dashboard
+        run: |
+          DASHBOARD_HOST=127.0.0.1 DASHBOARD_PORT=8765 python server.py &
+          sleep 2
+          curl -fsS http://127.0.0.1:8765/ > /tmp/dashboard.html
+          grep -q "Market Dashboard" /tmp/dashboard.html
+

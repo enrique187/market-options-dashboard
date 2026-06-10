@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SPY Market Dashboard</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c0d0f'/%3E%3Cpolyline points='6,42 20,30 30,38 44,16 58,24' fill='none' stroke='%233bcf8e' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section id="indexStrip" class="indexStrip" aria-label="Market indexes">
+        <div class="indexCard loadingIndex">Loading indexes</div>
+      </section>
+
+      <section class="mag7Banner" aria-label="Magnificent Seven live prices">
+        <div class="mag7Label">Magnificent 7</div>
+        <div class="mag7Viewport">
+          <div id="mag7Tape" class="mag7Tape">
+            <span class="mag7Loading">Loading live prices</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="topbar" aria-label="SPY summary">
+        <div class="identity">
+          <div id="ticker" class="ticker">SPY</div>
+          <div>
+            <h1 id="instrumentName">SPDR S&amp;P 500 ETF</h1>
+            <p id="marketState">Loading market data</p>
+          </div>
+        </div>
+        <form id="symbolSearch" class="symbolSearch" autocomplete="off">
+          <label for="symbolInput">Ticker</label>
+          <div class="searchBox">
+            <input id="symbolInput" name="symbol" type="search" placeholder="Search ticker or company" spellcheck="false">
+            <button type="submit">Go</button>
+          </div>
+          <div id="searchResults" class="searchResults" hidden></div>
+        </form>
+        <div class="marketClock" aria-label="Market clock">
+          <div id="clockTime" class="clockTime">--:--:-- ET</div>
+          <div id="clockDate" class="clockDate">--</div>
+          <div id="marketSessionBadge" class="marketSessionBadge closed">Market closed</div>
+          <div id="marketCountdown" class="marketCountdown">Loading session</div>
+        </div>
+        <div class="priceBlock">
+          <div class="liveRow">
+            <span id="liveDot" class="liveDot" aria-hidden="true"></span>
+            <span id="liveLabel">connecting</span>
+          </div>
+          <div id="price" class="price">--</div>
+          <div id="change" class="change">--</div>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Chart controls">
+        <div id="timeframes" class="segments" role="tablist" aria-label="Timeframe">
+          <button class="active" data-frame="1m" role="tab" aria-selected="true">1m</button>
+          <button data-frame="15m" role="tab" aria-selected="false">15m</button>
+          <button data-frame="1h" role="tab" aria-selected="false">1h</button>
+          <button data-frame="1d" role="tab" aria-selected="false">1d</button>
+          <button data-frame="1w" role="tab" aria-selected="false">1w</button>
+        </div>
+        <div id="maToggles" class="maToggles" aria-label="Moving average toggles">
+          <button type="button" data-ma="20" aria-pressed="false"><i class="maDot ma20"></i>MA20</button>
+          <button type="button" data-ma="40" aria-pressed="false"><i class="maDot ma40"></i>MA40</button>
+          <button type="button" data-ma="100" aria-pressed="false"><i class="maDot ma100"></i>MA100</button>
+          <button type="button" data-ma="200" aria-pressed="false"><i class="maDot ma200"></i>MA200</button>
+        </div>
+        <div class="legend" aria-label="Series legend">
+          <span><i class="swatch candleSwatch"></i>Candles</span>
+          <span><i class="swatch emaLine"></i>EMA 21</span>
+          <span><i class="swatch bandLine"></i>Bollinger</span>
+          <span><i class="swatch vwapLine"></i>VWAP</span>
+          <span><i class="swatch volumeBars"></i>Volume</span>
+        </div>
+      </section>
+
+      <section class="tradeRead" aria-label="Market read">
+        <div class="readCard biasCard">
+          <span>Bias</span>
+          <strong id="readBias">Waiting</strong>
+          <small id="readBiasDetail">Loading market context</small>
+        </div>
+        <div class="readCard">
+          <span>VWAP</span>
+          <strong id="readVwap">--</strong>
+          <small id="readVwapDetail">--</small>
+        </div>
+        <div class="readCard">
+          <span>VIX</span>
+          <strong id="readVix">--</strong>
+          <small id="readVixDetail">--</small>
+        </div>
+        <div class="readCard">
+          <span>Confirmations</span>
+          <strong id="readConfirmations">--</strong>
+          <small id="readConfirmationsDetail">SPY / QQQ / DIA / IWM</small>
+        </div>
+      </section>
+
+      <section class="levelsPanel" aria-label="Key trading levels">
+        <div class="panelMiniHeader">
+          <strong>Key levels</strong>
+          <span id="levelsMeta">Building from 1m tape</span>
+        </div>
+        <div id="levelsGrid" class="levelsGrid">
+          <div class="levelBox"><span>Premarket H/L</span><strong>--</strong></div>
+          <div class="levelBox"><span>Open range 5m</span><strong>--</strong></div>
+          <div class="levelBox"><span>Open range 15m</span><strong>--</strong></div>
+          <div class="levelBox"><span>Previous close</span><strong>--</strong></div>
+        </div>
+      </section>
+
+      <section class="chartSurface">
+        <div id="chart" class="tvChart" aria-label="SPY candlestick chart with Bollinger Bands and EMA 21"></div>
+        <div id="tooltip" class="tooltip" hidden></div>
+        <div id="loading" class="loading">Loading</div>
+      </section>
+
+      <section class="stats" aria-label="SPY stats">
+        <div>
+          <span>Bid</span>
+          <strong id="bid">--</strong>
+        </div>
+        <div>
+          <span>Ask</span>
+          <strong id="ask">--</strong>
+        </div>
+        <div>
+          <span>Range</span>
+          <strong id="range">--</strong>
+        </div>
+        <div>
+          <span>Volume</span>
+          <strong id="volume">--</strong>
+        </div>
+      </section>
+
+      <section class="optionsPanel" aria-label="Near ITM options">
+        <div class="panelHeader">
+          <div>
+            <h2>Near ITM Options</h2>
+            <p id="optionsMeta">Loading chain</p>
+          </div>
+          <div class="optionsSummary">
+            <strong id="budgetStatus">$60 budget - waiting for ask</strong>
+            <strong id="targetStatus">$0.75 target - waiting for ask</strong>
+          </div>
+        </div>
+        <div class="tableWrap">
+          <table class="optionChainTable">
+            <thead>
+              <tr>
+                <th class="callHead" colspan="5">Calls</th>
+                <th class="strikeHead">Strike</th>
+                <th class="putHead" colspan="5">Puts</th>
+              </tr>
+              <tr>
+                <th>Bid</th>
+                <th>Ask</th>
+                <th>Last</th>
+                <th>Delta</th>
+                <th>Vol</th>
+                <th>Strike</th>
+                <th>Bid</th>
+                <th>Ask</th>
+                <th>Last</th>
+                <th>Delta</th>
+                <th>Vol</th>
+              </tr>
+            </thead>
+            <tbody id="optionsRows">
+              <tr><td colspan="11">Loading</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <footer class="pageFooter" aria-label="References and links">
+        <div class="footerSources">
+          <strong>References</strong>
+          <span id="sourceStatus">Quote Robinhood - History Yahoo Finance</span>
+          <span id="optionsSource">Options: Robinhood instruments + Cboe delayed prices/Yahoo fallback</span>
+          <span>Clock: US regular market session, New York time</span>
+        </div>
+        <div class="referralBlock">
+          <strong>Links</strong>
+          <div id="referralLinks" class="referralLinks">
+            <span>No referral links configured</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <script src="https://unpkg.com/lightweight-charts@5/dist/lightweight-charts.standalone.production.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
