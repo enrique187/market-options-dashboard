@@ -1,8 +1,10 @@
-:root {
+:root,
+:root[data-theme="dark"] {
   color-scheme: dark;
   --bg: #101113;
   --panel: #17191c;
   --panel-2: #202329;
+  --panel-3: #121417;
   --text: #f4f5f7;
   --muted: #a5abb5;
   --line: #323842;
@@ -11,6 +13,56 @@
   --amber: #f4bd50;
   --blue: #62a8ff;
   --violet: #b28cff;
+  /* component-specific tokens */
+  --mag7-bg: #111418;
+  --input-bg: #101216;
+  --input-border: #343b46;
+  --segments-bg: #101216;
+  --segments-border: #2d333c;
+  --segments-active-shadow: #3a414d;
+  --chart-bg: #0c0d0f;
+  --chart-loading-bg: rgba(12, 13, 15, 0.72);
+  --tooltip-bg: rgba(23, 25, 28, 0.96);
+  --search-results-bg: rgba(23, 25, 28, 0.98);
+  --ticker-bg: #f4f5f7;
+  --ticker-text: #111317;
+  --underlying-text: #101113;
+  --theme-btn-bg: #202329;
+  --theme-btn-border: #343b46;
+  --theme-btn-hover: #2d333c;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg: #f0f2f5;
+  --panel: #ffffff;
+  --panel-2: #e8eaee;
+  --panel-3: #f5f6f8;
+  --text: #111317;
+  --muted: #6b7280;
+  --line: #d1d5db;
+  --green: #16a34a;
+  --red: #dc2626;
+  --amber: #b45309;
+  --blue: #2563eb;
+  --violet: #7c3aed;
+  /* component-specific tokens */
+  --mag7-bg: #f8f9fb;
+  --input-bg: #ffffff;
+  --input-border: #d1d5db;
+  --segments-bg: #e8eaee;
+  --segments-border: #c9cdd4;
+  --segments-active-shadow: #b0b7c3;
+  --chart-bg: #f8f9fb;
+  --chart-loading-bg: rgba(248, 249, 251, 0.82);
+  --tooltip-bg: rgba(255, 255, 255, 0.97);
+  --search-results-bg: rgba(255, 255, 255, 0.99);
+  --ticker-bg: #111317;
+  --ticker-text: #f4f5f7;
+  --underlying-text: #f4f5f7;
+  --theme-btn-bg: #e8eaee;
+  --theme-btn-border: #c9cdd4;
+  --theme-btn-hover: #d1d5db;
 }
 
 * {
@@ -98,7 +150,7 @@ button {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #111418;
+  background: var(--mag7-bg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -217,8 +269,8 @@ button {
   height: 58px;
   flex: 0 0 58px;
   border-radius: 8px;
-  background: #f4f5f7;
-  color: #111317;
+  background: var(--ticker-bg);
+  color: var(--ticker-text);
   font-weight: 800;
   letter-spacing: 0;
 }
@@ -246,9 +298,9 @@ p {
   gap: 4px;
   min-width: 178px;
   padding: 10px 12px;
-  border: 1px solid #343b46;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
-  background: #101216;
+  background: var(--input-bg);
   font-variant-numeric: tabular-nums;
 }
 
@@ -308,10 +360,10 @@ p {
   display: grid;
   grid-template-columns: 1fr 52px;
   height: 40px;
-  border: 1px solid #343b46;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   overflow: hidden;
-  background: #101216;
+  background: var(--input-bg);
 }
 
 .searchBox input {
@@ -326,7 +378,7 @@ p {
 
 .searchBox button {
   border: 0;
-  border-left: 1px solid #343b46;
+  border-left: 1px solid var(--input-border);
   background: var(--panel-2);
   color: var(--text);
   cursor: pointer;
@@ -343,7 +395,7 @@ p {
   overflow: auto;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(23, 25, 28, .98);
+  background: var(--search-results-bg);
   box-shadow: 0 18px 45px rgba(0, 0, 0, .35);
 }
 
@@ -484,8 +536,8 @@ p {
   width: min(370px, 100%);
   padding: 3px;
   border-radius: 8px;
-  background: #101216;
-  border: 1px solid #2d333c;
+  background: var(--segments-bg);
+  border: 1px solid var(--segments-border);
 }
 
 .segments button {
@@ -501,7 +553,7 @@ p {
 .segments button.active {
   background: var(--panel-2);
   color: var(--text);
-  box-shadow: inset 0 0 0 1px #3a414d;
+  box-shadow: inset 0 0 0 1px var(--segments-active-shadow);
 }
 
 .maToggles {
@@ -515,10 +567,10 @@ p {
   align-items: center;
   gap: 6px;
   min-height: 34px;
-  border: 1px solid #343b46;
+  border: 1px solid var(--input-border);
   border-radius: 8px;
   padding: 0 9px;
-  background: #101216;
+  background: var(--input-bg);
   color: var(--muted);
   cursor: pointer;
   font-size: 12px;
@@ -528,7 +580,7 @@ p {
 .maToggles button[aria-pressed="true"] {
   background: var(--panel-2);
   color: var(--text);
-  border-color: #4a5361;
+  border-color: var(--segments-active-shadow);
 }
 
 .maDot {
@@ -597,7 +649,7 @@ p {
 .levelsPanel {
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
-  background: #121417;
+  background: var(--panel-3);
 }
 
 .tradeRead {
@@ -715,7 +767,7 @@ p {
   min-height: 430px;
   border-left: 1px solid var(--line);
   border-right: 1px solid var(--line);
-  background: #0c0d0f;
+  background: var(--chart-bg);
   overflow: hidden;
 }
 
@@ -736,7 +788,7 @@ p {
   display: grid;
   place-items: center;
   color: var(--muted);
-  background: rgba(12, 13, 15, 0.72);
+  background: var(--chart-loading-bg);
 }
 
 .loading[hidden] {
@@ -748,7 +800,7 @@ p {
   padding: 10px 11px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(23, 25, 28, 0.96);
+  background: var(--tooltip-bg);
   color: var(--text);
   font-size: 12px;
   line-height: 1.45;
@@ -955,7 +1007,7 @@ tbody tr:last-child td {
   height: 24px;
   border-radius: 999px;
   background: var(--amber);
-  color: #101113;
+  color: var(--underlying-text);
   font-size: 12px;
   font-weight: 900;
 }
@@ -1058,8 +1110,31 @@ tbody tr:last-child td {
 }
 
 .referralLinks a:hover {
-  border-color: #4a5361;
+  border-color: var(--segments-active-shadow);
   background: var(--panel-2);
+}
+
+/* ── Theme toggle button ─────────────────────────────────────── */
+.themeToggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--theme-btn-border);
+  border-radius: 8px;
+  background: var(--theme-btn-bg);
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 17px;
+  line-height: 1;
+  transition: background .15s, color .15s, border-color .15s;
+}
+
+.themeToggle:hover {
+  background: var(--theme-btn-hover);
+  color: var(--text);
 }
 
 @media (max-width: 760px) {

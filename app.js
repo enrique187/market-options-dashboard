@@ -40,6 +40,64 @@ const state = {
 
 const PREFS_KEY = "spyDashboardPrefs";
 const VALID_FRAMES = ["1m", "15m", "1h", "1d", "1w"];
+const THEME_KEY = "dashboard-theme";
+
+// ── Theme helpers ────────────────────────────────────────────────
+
+function getChartThemeOptions(theme) {
+  if (theme === "light") {
+    return {
+      layout: {
+        background: { type: "solid", color: "#f8f9fb" },
+        textColor: "#6b7280",
+      },
+      grid: {
+        vertLines: { color: "rgba(107,114,128,.15)" },
+        horzLines: { color: "rgba(107,114,128,.20)" },
+      },
+      rightPriceScale: { borderColor: "#d1d5db" },
+      timeScale: { borderColor: "#d1d5db" },
+    };
+  }
+  // dark (default)
+  return {
+    layout: {
+      background: { type: "solid", color: "#0c0d0f" },
+      textColor: "#a5abb5",
+    },
+    grid: {
+      vertLines: { color: "rgba(165,171,181,.11)" },
+      horzLines: { color: "rgba(165,171,181,.16)" },
+    },
+    rightPriceScale: { borderColor: "#323842" },
+    timeScale: { borderColor: "#323842" },
+  };
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  if (elements.themeToggle) {
+    elements.themeToggle.textContent = theme === "light" ? "☾" : "☀︎";
+    elements.themeToggle.setAttribute("aria-label", theme === "light" ? "Switch to dark theme" : "Switch to light theme");
+  }
+  if (state.chart) {
+    state.chart.applyOptions(getChartThemeOptions(theme));
+  }
+}
+
+function initTheme() {
+  const saved = (() => { try { return localStorage.getItem(THEME_KEY); } catch { return null; } })();
+  const theme = saved === "light" || saved === "dark" ? saved : "dark";
+  applyTheme(theme);
+  if (elements.themeToggle) {
+    elements.themeToggle.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const next = current === "dark" ? "light" : "dark";
+      try { localStorage.setItem(THEME_KEY, next); } catch { /* ignore */ }
+      applyTheme(next);
+    });
+  }
+}
 
 function loadPrefs() {
   try {
@@ -108,6 +166,7 @@ const elements = {
   budgetStatus: document.querySelector("#budgetStatus"),
   targetStatus: document.querySelector("#targetStatus"),
   referralLinks: document.querySelector("#referralLinks"),
+  themeToggle: document.querySelector("#themeToggle"),
 };
 
 let optionBudget = appConfig.optionBudget;
@@ -195,6 +254,7 @@ document.addEventListener("visibilitychange", () => {
 boot();
 
 async function boot() {
+  initTheme();
   await loadConfig();
   restorePrefs();
   initTradingViewChart();
@@ -278,25 +338,23 @@ function applyConfig(config) {
 
 function initTradingViewChart() {
   const LightweightCharts = window.LightweightCharts;
+  const currentTheme = document.documentElement.getAttribute("data-theme") || "dark";
+  const themeOpts = getChartThemeOptions(currentTheme);
   state.chart = LightweightCharts.createChart(elements.chart, {
     width: elements.chart.clientWidth,
     height: elements.chart.clientHeight,
     autoSize: true,
     layout: {
-      background: { type: "solid", color: "#0c0d0f" },
-      textColor: "#a5abb5",
+      ...themeOpts.layout,
       attributionLogo: true,
     },
-    grid: {
-      vertLines: { color: "rgba(165,171,181,.11)" },
-      horzLines: { color: "rgba(165,171,181,.16)" },
-    },
+    grid: themeOpts.grid,
     rightPriceScale: {
-      borderColor: "#323842",
+      ...themeOpts.rightPriceScale,
       scaleMargins: { top: 0.08, bottom: 0.12 },
     },
     timeScale: {
-      borderColor: "#323842",
+      ...themeOpts.timeScale,
       timeVisible: true,
       secondsVisible: false,
     },
