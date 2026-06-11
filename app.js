@@ -118,8 +118,8 @@ function savePrefs(patch) {
 const appConfig = {
   defaultSymbol: "SPY",
   defaultName: "SPDR S&P 500 ETF",
-  optionBudget: 60,
-  optionTargetPremium: 0.75,
+  optionBudget: 80,
+  optionTargetPremium: 1.07,
   referralLinks: [],
 };
 
@@ -878,8 +878,8 @@ async function loadOptions() {
   } catch (error) {
     elements.optionsRows.innerHTML = `<tr><td colspan="11">${escapeHtml(error.message)}</td></tr>`;
     elements.optionsMeta.textContent = "Chain unavailable";
-    elements.budgetStatus.textContent = "$60 budget - chain unavailable";
-    elements.targetStatus.textContent = "$0.75 target - chain unavailable";
+    elements.budgetStatus.textContent = "$80 budget - chain unavailable";
+    elements.targetStatus.textContent = "$1.07 target - chain unavailable";
     elements.targetStatus.classList.remove("alert", "waiting");
   }
 }
@@ -1079,7 +1079,7 @@ function updateTargetStatus(rows) {
     return;
   }
 
-  elements.targetStatus.textContent = "$0.75 target - waiting for live asks";
+  elements.targetStatus.textContent = "$1.07 target - waiting for live asks";
   elements.targetStatus.classList.add("waiting");
   document.title = `${state.symbol} Market Dashboard`;
 }

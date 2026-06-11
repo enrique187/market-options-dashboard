@@ -49,8 +49,8 @@ HOST = os.getenv("DASHBOARD_HOST", "127.0.0.1")
 PORT = int(os.getenv("DASHBOARD_PORT", os.getenv("PORT", "8765")))
 DEFAULT_SYMBOL = os.getenv("DASHBOARD_DEFAULT_SYMBOL", "SPY").strip().upper() or "SPY"
 DEFAULT_NAME = os.getenv("DASHBOARD_DEFAULT_NAME", "SPDR S&P 500 ETF").strip() or DEFAULT_SYMBOL
-OPTION_BUDGET = float(os.getenv("DASHBOARD_OPTION_BUDGET", "60"))
-OPTION_TARGET_PREMIUM = float(os.getenv("DASHBOARD_OPTION_TARGET_PREMIUM", "0.75"))
+OPTION_BUDGET = float(os.getenv("DASHBOARD_OPTION_BUDGET", "80"))
+OPTION_TARGET_PREMIUM = float(os.getenv("DASHBOARD_OPTION_TARGET_PREMIUM", "1.07"))
 HISTORY_FILE = Path(os.getenv("DASHBOARD_HISTORY_FILE", str(ROOT / "robinhood-history.json")))
 if not HISTORY_FILE.is_absolute():
     HISTORY_FILE = ROOT / HISTORY_FILE
